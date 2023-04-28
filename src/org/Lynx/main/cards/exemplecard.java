@@ -1,18 +1,18 @@
 package org.Lynx.main.cards;
 
+import org.Lynx.main.abilities.exempleability;
+
 public class exemplecard {
 
     private String nom;
-    private int pv;
-    private int maxpv;
-    private int  dmgphys;
-    private int dmgmag;
-    private int defphys;
-    private int defmag;
-    private int maxmana;
-    private int mana;
+    private int pv, maxpv;
+    private int dmgmag, dmgphys;
+    private int defphys, defmag;
+    private int maxmana, mana;
+    private boolean BaIsmagic;
+    private exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag);
 
-    public exemplecard(String nom, int pv, int maxpv, int dmgphys, int dmgmag, int defphys, int defmag, int maxmana, int mana){
+    public exemplecard(String nom, int pv, int maxpv, int dmgphys, int dmgmag, int defphys, int defmag, int maxmana, int mana, boolean baismagic){
         this.nom = nom;
         this.pv = pv;
         this.maxpv = maxpv;
@@ -22,6 +22,7 @@ public class exemplecard {
         this.defmag = defmag;
         this.maxmana = maxmana;
         this.mana = mana;
+        this.BaIsmagic = baismagic;
     }
 
     public String getNom() {
@@ -79,12 +80,18 @@ public class exemplecard {
     public void setMaxmana(int maxmana) {
         this.maxmana = maxmana;
     }
+    public boolean getBaIsmagic(){
+        return BaIsmagic;
+    }
+    public exempleability getBaseAttack() {
+        return baseAttack;
+    }
 
 
     public int physdmg(exemplecard cible){
         int totalphysdmg = this.dmgphys- cible.getDefphys();
         if (totalphysdmg<=0){
-            System.out.println("-0 aucun points de dégats ont été infligés");
+            System.out.println("aucun points de dégats ont été infligés a "+cible.getNom());
         }
         else {
             cible.setPv(cible.getPv() - totalphysdmg);
@@ -94,20 +101,25 @@ public class exemplecard {
     }
 
 
-    public int magdmg(exemplecard cible){
+    public int magdmg(exemplecard cible, int manacost){
         int totalmagdmg = this.dmgmag-cible.getDefmag();
         if (mana > 2) {
-            cible.setPv(cible.getPv() - totalmagdmg);
-            System.out.println(totalmagdmg + " points de dégats magiques infligés a " + cible.getNom());
-            this.setMana(this.mana - 2);
-            return cible.getPv();
+            if (totalmagdmg <= 0){
+                System.out.println("aucun points de dégats ont été infligés a "+cible.getNom());
+            }else {
+                cible.setPv(cible.getPv() - totalmagdmg);
+                System.out.println(totalmagdmg + " points de dégats magiques infligés a " + cible.getNom());
+                this.setMana(this.mana - 2);
+                return cible.getPv();
+            }
         }
         else{
-            System.out.println("cette attaque n'est pas possible");
+            System.out.println(this.nom+" manque de mana: cette attaque n'est pas possible");
         }
 
         return this.getMana();
     }
+
 
 
 
