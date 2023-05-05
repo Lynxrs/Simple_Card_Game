@@ -10,6 +10,7 @@ public class exemplecard {
     private int defphys, defmag;
     private int maxmana, mana;
     private boolean BaIsmagic;
+    private int lvl = 0;
     private exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag);
 
     public exemplecard(String nom, int pv, int maxpv, int dmgphys, int dmgmag, int defphys, int defmag, int maxmana, int mana, boolean baismagic){
@@ -91,11 +92,11 @@ public class exemplecard {
     public int physdmg(exemplecard cible){
         int totalphysdmg = this.dmgphys- cible.getDefphys();
         if (totalphysdmg<=0){
-            System.out.println("aucun points de dégats ont été infligés a "+cible.getNom());
+            System.out.println(" Aucun points de dégats ont été infligés a "+cible.getNom());
         }
         else {
             cible.setPv(cible.getPv() - totalphysdmg);
-            System.out.println(totalphysdmg + " points de dégats physiques infligés a " + cible.getNom());
+            System.out.println(" "+totalphysdmg + " points de dégats physiques infligés a " + cible.getNom());
         }
         return cible.pv;
     }
@@ -105,22 +106,27 @@ public class exemplecard {
         int totalmagdmg = this.dmgmag-cible.getDefmag();
         if (mana > 2) {
             if (totalmagdmg <= 0){
-                System.out.println("aucun points de dégats ont été infligés a "+cible.getNom());
+                System.out.println(" Aucun points de dégats ont été infligés a "+cible.getNom());
             }else {
                 cible.setPv(cible.getPv() - totalmagdmg);
-                System.out.println(totalmagdmg + " points de dégats magiques infligés a " + cible.getNom());
+                System.out.println(" "+totalmagdmg + " points de dégats magiques infligés a " + cible.getNom());
                 this.setMana(this.mana - 2);
                 return cible.getPv();
             }
         }
         else{
-            System.out.println(this.nom+" manque de mana: cette attaque n'est pas possible");
+            System.out.println(" "+this.nom+" Manque de mana: cette attaque n'est pas possible");
         }
 
         return this.getMana();
     }
 
 
+    public int getLvl() {
+        return lvl;
+    }
 
-
+    public void setLvl(int lvl) {
+        this.lvl = lvl;
+    }
 }
