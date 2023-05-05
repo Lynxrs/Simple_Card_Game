@@ -69,6 +69,9 @@ public class Main {
         }
     }
 
+    public static void heal(exemplecard target, int percentage){
+        target.setPv(target.getPv()+Math.round((target.getPv()/target.getMaxpv())*100));
+    }
     public static void Baseattack(exemplecard caster, exemplecard target){
         if (caster == target){
             System.out.println("vous ne pouvez vous infliger des dégats");
