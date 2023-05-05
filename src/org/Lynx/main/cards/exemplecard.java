@@ -11,8 +11,8 @@ public class exemplecard {
     private int maxmana, mana;
     private boolean BaIsmagic;
     private int lvl = 0;
-    private exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag);
-
+    private final exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag);
+    private exempleability[] abilityList ={baseAttack};
     public exemplecard(String nom, int pv, int maxpv, int dmgphys, int dmgmag, int defphys, int defmag, int maxmana, int mana, boolean baismagic){
         this.nom = nom;
         this.pv = pv;
@@ -87,6 +87,9 @@ public class exemplecard {
     public exempleability getBaseAttack() {
         return baseAttack;
     }
+    public exempleability[] getAbilityList() {
+        return abilityList;
+    }
 
 
     public int physdmg(exemplecard cible){
@@ -110,7 +113,7 @@ public class exemplecard {
             }else {
                 cible.setPv(cible.getPv() - totalmagdmg);
                 System.out.println(" "+totalmagdmg + " points de dégats magiques infligés a " + cible.getNom());
-                this.setMana(this.mana - 2);
+                this.setMana(this.mana - manacost);
                 return cible.getPv();
             }
         }
@@ -129,4 +132,6 @@ public class exemplecard {
     public void setLvl(int lvl) {
         this.lvl = lvl;
     }
+
+
 }
