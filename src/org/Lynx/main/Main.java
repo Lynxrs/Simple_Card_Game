@@ -39,6 +39,7 @@ public class Main {
         Baseattack(test1,test2);
         System.out.println(separator);
         nt = NextTurn(nt);
+        heal(test2,20);
 
 
         System.out.println(test1.getLvl());
@@ -69,8 +70,20 @@ public class Main {
         }
     }
 
-    public static void heal(exemplecard target, int percentage){
-        target.setPv(target.getPv()+Math.round((target.getPv()/target.getMaxpv())*100));
+    public static void heal(exemplecard target, float percentage){
+        //calculating new hp amount
+        float pvtoset = Math.round(target.getPv()*(1.0+(percentage/100)));
+        int newhp = (int) pvtoset;
+
+        //setting the new hp
+        if(newhp>target.getMaxpv()){
+            target.setPv( target.getMaxpv() );
+            System.out.println(target.getPv());
+        }else{
+            target.setPv(newhp);
+            System.out.println(target.getPv());
+        }
+
     }
     public static void Baseattack(exemplecard caster, exemplecard target){
         if (caster == target){
@@ -90,7 +103,7 @@ public class Main {
 
     }
     public static void NextPlayer(List tours, int nt, exemplecard touractuel){
-
+        //
         exemplecard temp = touractuel;
         tours.remove(0);
         tours.add(temp);
