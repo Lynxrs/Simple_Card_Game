@@ -44,7 +44,8 @@ public class Main {
         System.out.println(test1.getLvl());
         LvlUp(test1);
         System.out.println(test1.getLvl());
-        System.out.println("veuilleez entrez votre action : ");
+        System.out.println("Que voulez vous faire? : ");
+        System.out.println("1: attacker 2: vous reposer 3:passer votre tour");
         int action = sc.nextInt();
 
         switch (action){
