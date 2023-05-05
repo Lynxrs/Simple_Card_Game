@@ -26,7 +26,7 @@ public class exempleability {
     public int getManacost() {
         return manacost;
     }
-
+    public void setManacost(int manacost){this.manacost = manacost;}
     public int getDmgphys() {
         return dmgphys;
     }
