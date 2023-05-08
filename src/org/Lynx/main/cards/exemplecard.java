@@ -124,6 +124,17 @@ public class exemplecard {
         return this.getMana();
     }
 
+    public void DislpayStats(){
+        System.out.println("Pv : "+this.getPv()+"/"+this.getMaxpv());
+        System.out.println("Mana : "+this.getMana()+"/"+this.getMaxmana());
+        System.out.println("Capacités: ");
+
+        for (exempleability alname : this.getAbilityList()){
+            System.out.println("  "+alname.getName());
+        }
+
+    }
+
 
     public int getLvl() {
         return lvl;

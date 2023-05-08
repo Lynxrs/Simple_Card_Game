@@ -1,6 +1,7 @@
 package org.Lynx.main;
 
 import org.Lynx.main.abilities.exempleability;
+import org.Lynx.main.cards.Player;
 import org.Lynx.main.cards.exemplecard;
 
 import java.util.ArrayList;
@@ -9,21 +10,23 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
-        List<exemplecard> tours = new ArrayList<>();
-        List<exemplecard> registerdacrds = new ArrayList<>();
+        List<Player> tours = new ArrayList<>();
+        List<exemplecard> registeredacrds = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
         int nt = 1;
         boolean game = true;
 
         //test program  for all the features
         String separator = "==============================";
+
+        //register all the cards
         exemplecard test2 = new exemplecard("test2", 55, 65, 8, 16, 6, 3, 75,60, false);
+        registercard(test2, registeredacrds);
+
         exemplecard test1 = new exemplecard("test1",26,30,4,5,8,6,55, 45, true);
-        tours.add(test1);
-        tours.add(test2);
-        registerdacrds.add(test1);
-        registerdacrds.add(test2);
-        /*
+        registercard(test1, registeredacrds);
+
+        /* tests
         System.out.println(separator);
         System.out.println("nom :"+test1.getNom());
         System.out.println("pv :"+test1.getPv());
@@ -54,7 +57,23 @@ public class Main {
             System.out.println(separator);
             System.out.println("Nombre de joueurs");
             int a = sc.nextInt();
-            exemplecard touractuel = tours.get(0);
+            int bc = 0;
+            while (bc !=a){
+                System.out.println(a);
+                System.out.println("Veuillez entrez le nom du joueur : ");
+                String name = sc.next();
+                System.out.println("Veuillez selectionner une carte : ");
+                int i = 0;
+                for (exemplecard exc : registeredacrds) {
+                    System.out.println("n°" + i + " : " + exc.getNom());
+                    i++;
+                }
+                int card = sc.nextInt();
+                Player player = new Player(name, new exemplecard[]{registeredacrds.get(card)});
+                tours.add(player);
+                bc++;
+            }
+            Player touractuel = tours.get(0);
             System.out.println(separator);
             System.out.println(" 1er tour");
             boolean win = false;
@@ -62,7 +81,7 @@ public class Main {
                 int f=0;
 
                 while(f <a ) {
-                    DislpayStats(touractuel);
+                    touractuel.getcard().DislpayStats();
                     System.out.println("Que voulez vous faire? : ");
                     System.out.println("1: attacker 2: vous reposer 3: passer votre tour");
                     int action = sc.nextInt();
@@ -70,17 +89,17 @@ public class Main {
                         case 1 -> {
                             System.out.println("Selectionnez la cible");
                             int i = 0;
-                            for (exemplecard exc : registerdacrds) {
+                            for (exemplecard exc : registeredacrds) {
                                 System.out.println("n°" + i + " : " + exc.getNom());
                                 i++;
                             }
                             int cible = sc.nextInt();
-                            exemplecard rcible = registerdacrds.get(cible);
-                            Baseattack(touractuel, rcible);
+                            exemplecard rcible = registeredacrds.get(cible);
+                            Baseattack(touractuel.getcard(), rcible);
                         }
                         case 2 -> {
-                            heal(touractuel, 10);
-                            manaheal(touractuel, 12);
+                            heal(touractuel.getcard(), 10);
+                            manaheal(touractuel.getcard(), 12);
                         }
                         case 3 -> System.out.println("Vous passez votre tour");
                         default -> System.out.println("Séléctionnez une action valide");
@@ -97,25 +116,20 @@ public class Main {
                 if(nt == 3){
                     win = true;
                     game = false;
+                }else {
+                    System.out.println(separator);
+                    System.out.println(separator);
+                    nt = NextTurn(nt, tours, touractuel);
+                    touractuel = tours.get(0);
                 }
-                System.out.println(separator);
-                System.out.println(separator);
-                nt = NextTurn(nt, tours, touractuel);
-                touractuel = tours.get(0);
-
             }
         }
     }
-    public static void DislpayStats(exemplecard actual){
-        System.out.println("Pv : "+actual.getPv()+"/"+actual.getMaxpv());
-        System.out.println("Mana : "+actual.getMana()+"/"+actual.getMaxmana());
-        System.out.println("Capacités: ");
 
-        for (exempleability alname : actual.getAbilityList()){
-            System.out.println("  "+alname.getName());
-        }
-
+    public static void registercard(exemplecard card, List registeredcards){
+        registeredcards.add(card);
     }
+
     public static void heal(exemplecard target, float percentage){
         //calculating new hp amount
         float pvtoset = Math.round( target.getPv()*(1.0+(percentage/100) ) );
@@ -162,22 +176,24 @@ public class Main {
         }
 
     }
-    public static List NextPlayer(List tours, exemplecard touractuel){
+    public static List NextPlayer(List tours, Player touractuel){
         //
-        exemplecard temp = touractuel;
+        Player temp = touractuel;
         tours.remove(0);
         tours.add(temp);
-        exemplecard msg = (exemplecard) tours.get(0);
+        Player msg = (Player) tours.get(0);
         System.out.println(" Au tour de "+ msg.getNom()+" de jouer");
         return tours;
     }
-    public static int NextTurn(int nt,List tours, exemplecard touractuel){
+    public static int NextTurn(int nt,List tours, Player touractuel){
         nt+=1;
         System.out.println("tour numéro "+nt);
         tours = NextPlayer(tours, touractuel);
         return nt;
     }
 
+
+    //made the lvl system a bit early i won't use it
     public static void LvlUp(exemplecard card){
         card.setLvl(card.getLvl()+1);
         card.setMaxpv(card.getPv()+2);
