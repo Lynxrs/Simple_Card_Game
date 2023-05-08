@@ -26,30 +26,7 @@ public class Main {
         exemplecard test1 = new exemplecard("test1",26,30,4,5,8,6,55, 45, true);
         registercard(test1, registeredacrds);
 
-        /* tests
-        System.out.println(separator);
-        System.out.println("nom :"+test1.getNom());
-        System.out.println("pv :"+test1.getPv());
-        System.out.println("pv max: "+test1.getMaxpv());
-        System.out.println(separator);
-        DislpayStats(test1);
 
-        System.out.println(separator);
-        nt = NextTurn(nt, tours,touractuel);
-        NextPlayer(tours, touractuel);
-        Baseattack(test2,test1);
-        System.out.println(separator);
-        NextPlayer(tours, touractuel);
-        Baseattack(test1,test2);
-        System.out.println(separator);
-        nt = NextTurn(nt,tours,touractuel);
-        heal(test2,20);
-
-
-        System.out.println(test1.getLvl());
-        LvlUp(test1);
-        System.out.println(test1.getLvl());
-         */
 
         //main game
         while(game) {
