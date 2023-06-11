@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    //make print easy to use
+    public static void print(Object str) {
+        System.out.println(str);
+    }
+
     public static void main(String[] args){
         List<Player> tours = new ArrayList<>();
         List<exemplecard> registeredacrds = new ArrayList<>();
@@ -29,56 +34,56 @@ public class Main {
 
         //main game
         while(game) {
-            System.out.println(separator);
-            System.out.println(separator);
-            System.out.println("Nombre de joueurs");
+            print(separator);
+            print(separator);
+            print("Nombre de joueurs");
             int a = sc.nextInt();
             int bc = 0;
-            System.out.println("Nombre de card par joueur");
+            print("Nombre de card par joueur");
             int nbcard = sc.nextInt();
             //Générateur de joueur
             while (bc !=a){
-                System.out.println(a);
-                System.out.println("Veuillez entrez le nom du joueur : ");
+                print(a);
+                print("Veuillez entrez le nom du joueur : ");
                 String name = sc.next();
                 Player player = new Player(name);
-                System.out.println(player.getNom()+" veuillez ajouter "+nbcard+" une carte : ");
+                print(player.getNom()+" veuillez ajouter "+nbcard+" une carte : ");
                 int nbcc =0;
                 while(nbcard != nbcc) {
                     cardLister(registeredacrds);
                     int card = sc.nextInt();
                     player.AddCard(player.getCardList(),registeredacrds.get(card));
-                    System.out.println("Carte suivante");
+                    print("Carte suivante");
                     nbcc++;
                 }
-                System.out.println("Joueur suivant");
+                print("Joueur suivant");
                 tours.add(player);
                 bc++;
             }
             //démarrage du jeu
             Player touractuel = tours.get(0);
-            System.out.println(separator);
-            System.out.println(" 1er tour");
+            print(separator);
+            print(" 1er tour");
             boolean win = false;
             //boucle condition de victoire
             while (!win) {
                 int f=0;
                 while(f <a ) {
-                    System.out.println("Séléctionnez une carte de votre main");
+                    print("Séléctionnez une carte de votre main");
                     cardLister(touractuel.getCardList());
                     int selectedcard = sc.nextInt();
-                    System.out.println(separator);
+                    print(separator);
                     touractuel.getcard(selectedcard).DislpayStats();
-                    System.out.println("Que voulez vous faire? : ");
-                    System.out.println("1: attacker 2: vous reposer 3: passer votre tour");
+                    print("Que voulez vous faire? : ");
+                    print("1: attacker 2: vous reposer 3: passer votre tour");
                     int playeraction = sc.nextInt();
                     //actions
                     switch (playeraction) {
                         case 1 -> {
-                            System.out.println("Selectionnez un joueur");
+                            print("Selectionnez un joueur");
                             playerlister(touractuel,tours);
                             int pcible = sc.nextInt();
-                            System.out.println("Selectionner la cible");
+                            print("Selectionner la cible");
                             cardLister(registeredacrds);
                             int cible = sc.nextInt();
                             exemplecard rcible = (exemplecard) tours.get(pcible).getCardList().get(cible);
@@ -89,14 +94,14 @@ public class Main {
                             heal(touractuel.getcard(0), 10);
                             manaheal(touractuel.getcard(0), 12);
                         }
-                        case 3 -> System.out.println("Vous passez votre tour");
-                        default -> System.out.println("Séléctionnez une action valide");
+                        case 3 -> print("Vous passez votre tour");
+                        default -> print("Séléctionnez une action valide");
                     }
                     f++;
                     if (f==a){
-                        System.out.println(" Fin du tour");
+                        print(" Fin du tour");
                     } else {
-                        System.out.println(separator);
+                        print(separator);
                         tours = NextPlayer(tours, touractuel);
                         touractuel = tours.get(0);
                     }
@@ -106,8 +111,8 @@ public class Main {
                     win = true;
                     game = false;
                 }else {
-                    System.out.println(separator);
-                    System.out.println(separator);
+                    print(separator);
+                    print(separator);
                     nt = NextTurn(nt, tours, touractuel);
                     touractuel = tours.get(0);
                 }
@@ -115,7 +120,7 @@ public class Main {
         }
     }
 
-    public static void registercard(exemplecard card, List registeredcards){
+    public static void registercard(exemplecard card, List<exemplecard> registeredcards){
         registeredcards.add(card);
     }
 
@@ -127,10 +132,10 @@ public class Main {
         //setting the new hp amount
         if(newhp>target.getMaxpv()){
             target.setPv( target.getMaxpv() );
-            System.out.println(target.getPv());
+            print(target.getPv());
         }else{
             target.setPv(newhp);
-            System.out.println(target.getPv());
+            print(target.getPv());
         }
 
     }
@@ -142,15 +147,15 @@ public class Main {
         //setting the new mana
         if(newMana>target.getMaxmana()){
             target.setMana( target.getMaxmana() );
-            System.out.println(target.getMana());
+            print(target.getMana());
         }else{
             target.setMana(newMana);
-            System.out.println(target.getMana());
+            print(target.getMana());
         }
     }
     public static void Baseattack(exemplecard caster, exemplecard target, Player pcaster, Player ptarget){
         if (caster == target && pcaster == ptarget){
-            System.out.println("vous ne pouvez vous infliger des dégats");
+            print("vous ne pouvez vous infliger des dégats");
         }
         if (caster.getBaIsmagic()){
             caster.magdmg(target, caster.getBaseAttack().getManacost());
@@ -160,18 +165,18 @@ public class Main {
         }
 
     }
-    public static List NextPlayer(List tours, Player touractuel){
+    public static List<Player> NextPlayer(List<Player> tours, Player touractuel){
         //
         Player temp = touractuel;
         tours.remove(0);
         tours.add(temp);
         Player msg = (Player) tours.get(0);
-        System.out.println(" Au tour de "+ msg.getNom()+" de jouer");
+        print(" Au tour de "+ msg.getNom()+" de jouer");
         return tours;
     }
     public static int NextTurn(int nt,List tours, Player touractuel){
         nt+=1;
-        System.out.println("tour numéro "+nt);
+        print("tour numéro "+nt);
         tours = NextPlayer(tours, touractuel);
         return nt;
     }
@@ -179,12 +184,12 @@ public class Main {
     //if you use the alive state change function from void to boolean
     public static void LifeCheck(Player player, exemplecard cible){
         if (cible.getPv() <=0){
-            System.out.println(cible+" ne possède plus de vie il est donc éliminé.");
+            print(cible+" ne possède plus de vie il est donc éliminé.");
             //return false; (for alive state)
             player.RemoveCard(player.getCardList(), cible);
 
         }else{
-            System.out.println("Il reste "+cible.getPv()+" Pv à "+cible.getNom()+".");
+            print("Il reste "+cible.getPv()+" Pv à "+cible.getNom()+".");
             //return true; (for alive state)
         }
     }
@@ -192,7 +197,7 @@ public class Main {
     public static void cardLister(List<exemplecard> regisred){
         int i = 0;
         for (exemplecard exc : regisred) {
-            System.out.println("n°" + i + " : " + exc.getNom());
+            print("n°" + i + " : " + exc.getNom());
             i++;
         }
     }
@@ -202,7 +207,7 @@ public class Main {
         for (Player p : registered){
             if(p == atour){
             }else {
-                System.out.println("n°" + i + " : " + p.getNom());
+                print("n°" + i + " : " + p.getNom());
             }
             i++;
         }
