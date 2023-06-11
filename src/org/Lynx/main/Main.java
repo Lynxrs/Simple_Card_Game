@@ -25,7 +25,6 @@ public class Main {
 
         exemplecard test1 = new exemplecard("test1",26,30,4,5,8,6,55, 45, true);
         registercard(test1, registeredacrds);
-
         cardlister(registeredacrds);
 
         //main game
@@ -35,16 +34,24 @@ public class Main {
             System.out.println("Nombre de joueurs");
             int a = sc.nextInt();
             int bc = 0;
+            System.out.println("Nombre de card par joueur");
+            int nbcard = sc.nextInt();
             //Générateur de joueur
             while (bc !=a){
                 System.out.println(a);
                 System.out.println("Veuillez entrez le nom du joueur : ");
                 String name = sc.next();
                 Player player = new Player(name);
-                System.out.println(player.getNom()+" veuillez selectionner une carte : ");
-                cardlister(registeredacrds);
-                int card = sc.nextInt();
-                player.AddCard(player.getCardList(),registeredacrds.get(card));
+                System.out.println(player.getNom()+" veuillez ajouter "+nbcard+" une carte : ");
+                int nbcc =0;
+                while(nbcard != nbcc) {
+                    cardlister(registeredacrds);
+                    int card = sc.nextInt();
+                    player.AddCard(player.getCardList(),registeredacrds.get(card));
+                    System.out.println("Carte suivante");
+                    nbcc++;
+                }
+                System.out.println("Joueur suivant");
                 tours.add(player);
                 bc++;
             }
@@ -58,7 +65,9 @@ public class Main {
                 int f=0;
                 while(f <a ) {
                     System.out.println("Séléctionnez une carte de votre main");
-                    touractuel.getcard(0).DislpayStats();
+                    cardlister(touractuel.getCardList());
+                    int selectedcard = sc.nextInt();
+                    touractuel.getcard(selectedcard).DislpayStats();
                     System.out.println("Que voulez vous faire? : ");
                     System.out.println("1: attacker 2: vous reposer 3: passer votre tour");
                     int action = sc.nextInt();
@@ -69,7 +78,7 @@ public class Main {
                             cardlister(registeredacrds);
                             int cible = sc.nextInt();
                             exemplecard rcible = registeredacrds.get(cible);
-                            Baseattack(touractuel.getcard(0), rcible);
+                            Baseattack(touractuel.getcard(selectedcard), rcible);
                             LifeCheck(rcible);
 
                         }
