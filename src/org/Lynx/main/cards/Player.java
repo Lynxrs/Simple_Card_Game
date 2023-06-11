@@ -21,6 +21,7 @@ public class Player {
 
     public static void AddCard(List cardlist,exemplecard card){
         cardlist.add(card);
+
     }
     public exemplecard getcard(int numcarte){
         return cardlist.get(numcarte);
