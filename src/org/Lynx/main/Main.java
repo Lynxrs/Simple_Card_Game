@@ -25,7 +25,7 @@ public class Main {
 
         exemplecard test1 = new exemplecard("test1",26,30,4,5,8,6,55, 45, true);
         registercard(test1, registeredacrds);
-        cardlister(registeredacrds);
+        cardLister(registeredacrds);
 
         //main game
         while(game) {
@@ -45,7 +45,7 @@ public class Main {
                 System.out.println(player.getNom()+" veuillez ajouter "+nbcard+" une carte : ");
                 int nbcc =0;
                 while(nbcard != nbcc) {
-                    cardlister(registeredacrds);
+                    cardLister(registeredacrds);
                     int card = sc.nextInt();
                     player.AddCard(player.getCardList(),registeredacrds.get(card));
                     System.out.println("Carte suivante");
@@ -65,22 +65,24 @@ public class Main {
                 int f=0;
                 while(f <a ) {
                     System.out.println("Séléctionnez une carte de votre main");
-                    cardlister(touractuel.getCardList());
+                    cardLister(touractuel.getCardList());
                     int selectedcard = sc.nextInt();
                     touractuel.getcard(selectedcard).DislpayStats();
                     System.out.println("Que voulez vous faire? : ");
                     System.out.println("1: attacker 2: vous reposer 3: passer votre tour");
-                    int action = sc.nextInt();
+                    int playeraction = sc.nextInt();
                     //actions
-                    switch (action) {
+                    switch (playeraction) {
                         case 1 -> {
-                            System.out.println("Selectionnez la cible");
-                            cardlister(registeredacrds);
+                            System.out.println("Selectionnez un joueur");
+                            playerlister(touractuel,tours);
+                            int pcible = sc.nextInt();
+                            System.out.println("Selectionner la cible");
+                            cardLister(registeredacrds);
                             int cible = sc.nextInt();
-                            exemplecard rcible = registeredacrds.get(cible);
-                            Baseattack(touractuel.getcard(selectedcard), rcible);
-                            LifeCheck(rcible);
-
+                            exemplecard rcible = (exemplecard) tours.get(pcible).getCardList().get(cible);
+                            Baseattack(touractuel.getcard(selectedcard), rcible, touractuel, tours.get(pcible));
+                            LifeCheck(tours.get(pcible), rcible);
                         }
                         case 2 -> {
                             heal(touractuel.getcard(0), 10);
@@ -145,18 +147,15 @@ public class Main {
             System.out.println(target.getMana());
         }
     }
-    public static void Baseattack(exemplecard caster, exemplecard target){
-        if (caster == target){
+    public static void Baseattack(exemplecard caster, exemplecard target, Player pcaster, Player ptarget){
+        if (caster == target && pcaster == ptarget){
             System.out.println("vous ne pouvez vous infliger des dégats");
-            Baseattack(caster, target);
         }
         if (caster.getBaIsmagic()){
             caster.magdmg(target, caster.getBaseAttack().getManacost());
-            LifeCheck(target);
 
         } else if (!caster.getBaIsmagic()) {
             caster.physdmg(target);
-            LifeCheck(target);
         }
 
     }
@@ -176,17 +175,17 @@ public class Main {
         return nt;
     }
 
-    public static boolean LifeCheck(exemplecard cible){
+    public static void LifeCheck(Player player, exemplecard cible){
         if (cible.getPv() <=0){
             System.out.println(cible+" ne possède plus de vie il est donc éliminé.");
-            return false;
+            player.RemoveCard(player.getCardList(), cible);
+
         }else{
             System.out.println("Il reste "+cible.getPv()+" Pv à "+cible.getNom()+".");
         }
-        return true;
     }
 
-    public static void cardlister(List<exemplecard> regisred){
+    public static void cardLister(List<exemplecard> regisred){
         int i = 0;
         for (exemplecard exc : regisred) {
             System.out.println("n°" + i + " : " + exc.getNom());
@@ -194,7 +193,18 @@ public class Main {
         }
     }
 
-    //made the lvl system a bit early i won't use it
+    public static void playerlister(Player atour,List<Player> registered){
+        int i = 0;
+        for (Player p : registered){
+            if(p == atour){
+            }else {
+                System.out.println("n°" + i + " : " + p.getNom());
+            }
+            i++;
+        }
+    }
+
+    //made the lvl system a bit early I won't use it
     public static void LvlUp(exemplecard card){
         card.setLvl(card.getLvl()+1);
         card.setMaxpv(card.getPv()+2);
