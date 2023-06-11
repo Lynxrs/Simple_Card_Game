@@ -26,7 +26,7 @@ public class Main {
         exemplecard test1 = new exemplecard("test1",26,30,4,5,8,6,55, 45, true);
         registercard(test1, registeredacrds);
 
-
+        cardlister(registeredacrds);
 
         //main game
         while(game) {
@@ -35,48 +35,47 @@ public class Main {
             System.out.println("Nombre de joueurs");
             int a = sc.nextInt();
             int bc = 0;
+            //Générateur de joueur
             while (bc !=a){
                 System.out.println(a);
                 System.out.println("Veuillez entrez le nom du joueur : ");
                 String name = sc.next();
-                System.out.println("Veuillez selectionner une carte : ");
-                int i = 0;
-                for (exemplecard exc : registeredacrds) {
-                    System.out.println("n°" + i + " : " + exc.getNom());
-                    i++;
-                }
+                Player player = new Player(name);
+                System.out.println(player.getNom()+" veuillez selectionner une carte : ");
+                cardlister(registeredacrds);
                 int card = sc.nextInt();
-                Player player = new Player(name, new exemplecard[]{registeredacrds.get(card)});
+                player.AddCard(player.getCardList(),registeredacrds.get(card));
                 tours.add(player);
                 bc++;
             }
+            //démarrage du jeu
             Player touractuel = tours.get(0);
             System.out.println(separator);
             System.out.println(" 1er tour");
             boolean win = false;
+            //boucle condition de victoire
             while (!win) {
                 int f=0;
-
                 while(f <a ) {
-                    touractuel.getcard().DislpayStats();
+                    System.out.println("Séléctionnez une carte de votre main");
+                    touractuel.getcard(0).DislpayStats();
                     System.out.println("Que voulez vous faire? : ");
                     System.out.println("1: attacker 2: vous reposer 3: passer votre tour");
                     int action = sc.nextInt();
+                    //actions
                     switch (action) {
                         case 1 -> {
                             System.out.println("Selectionnez la cible");
-                            int i = 0;
-                            for (exemplecard exc : registeredacrds) {
-                                System.out.println("n°" + i + " : " + exc.getNom());
-                                i++;
-                            }
+                            cardlister(registeredacrds);
                             int cible = sc.nextInt();
                             exemplecard rcible = registeredacrds.get(cible);
-                            Baseattack(touractuel.getcard(), rcible);
+                            Baseattack(touractuel.getcard(0), rcible);
+                            LifeCheck(rcible);
+
                         }
                         case 2 -> {
-                            heal(touractuel.getcard(), 10);
-                            manaheal(touractuel.getcard(), 12);
+                            heal(touractuel.getcard(0), 10);
+                            manaheal(touractuel.getcard(0), 12);
                         }
                         case 3 -> System.out.println("Vous passez votre tour");
                         default -> System.out.println("Séléctionnez une action valide");
@@ -90,7 +89,8 @@ public class Main {
                         touractuel = tours.get(0);
                     }
                 }
-                if(nt == 3){
+                //condition de victoire débug
+                if(nt == 8){
                     win = true;
                     game = false;
                 }else {
@@ -109,7 +109,7 @@ public class Main {
 
     public static void heal(exemplecard target, float percentage){
         //calculating new hp amount
-        float pvtoset = Math.round( target.getPv()*(1.0+(percentage/100) ) );
+        float pvtoset = Math.round(target.getMaxpv()*(1.0+(percentage/100)));
         int newhp = (int) pvtoset;
 
         //setting the new hp amount
@@ -139,17 +139,15 @@ public class Main {
     public static void Baseattack(exemplecard caster, exemplecard target){
         if (caster == target){
             System.out.println("vous ne pouvez vous infliger des dégats");
-            return;
+            Baseattack(caster, target);
         }
         if (caster.getBaIsmagic()){
-            System.out.println();
             caster.magdmg(target, caster.getBaseAttack().getManacost());
-            System.out.println(" Pv restants de "+target.getNom()+": "+target.getPv());
+            LifeCheck(target);
 
         } else if (!caster.getBaIsmagic()) {
             caster.physdmg(target);
-            System.out.println(" Pv restants de "+target.getNom()+": "+target.getPv());
-
+            LifeCheck(target);
         }
 
     }
@@ -169,6 +167,23 @@ public class Main {
         return nt;
     }
 
+    public static boolean LifeCheck(exemplecard cible){
+        if (cible.getPv() <=0){
+            System.out.println(cible+" ne possède plus de vie il est donc éliminé.");
+            return false;
+        }else{
+            System.out.println("Il reste "+cible.getPv()+" Pv à "+cible.getNom()+".");
+        }
+        return true;
+    }
+
+    public static void cardlister(List<exemplecard> regisred){
+        int i = 0;
+        for (exemplecard exc : regisred) {
+            System.out.println("n°" + i + " : " + exc.getNom());
+            i++;
+        }
+    }
 
     //made the lvl system a bit early i won't use it
     public static void LvlUp(exemplecard card){
