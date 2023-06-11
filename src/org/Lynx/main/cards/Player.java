@@ -1,19 +1,28 @@
 package org.Lynx.main.cards;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
     private final String nom;
-    private exemplecard[] cardlist;
+    private List<exemplecard> cardlist = new ArrayList<>();
 
-    public Player(String nom, exemplecard[] cardlist) {
+    public Player(String nom) {
         this.nom = nom;
-        this.cardlist = cardlist;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public exemplecard getcard(){
-        return cardlist[0];
+    public List getCardList(){
+        return cardlist;
+    }
+
+    public static void AddCard(List cardlist,exemplecard card){
+        cardlist.add(card);
+    }
+    public exemplecard getcard(int numcarte){
+        return cardlist.get(numcarte);
     }
 }
