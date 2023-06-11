@@ -175,13 +175,16 @@ public class Main {
         return nt;
     }
 
+    //if you use the alive state change function from void to boolean
     public static void LifeCheck(Player player, exemplecard cible){
         if (cible.getPv() <=0){
             System.out.println(cible+" ne possède plus de vie il est donc éliminé.");
+            //return false; (for alive state)
             player.RemoveCard(player.getCardList(), cible);
 
         }else{
             System.out.println("Il reste "+cible.getPv()+" Pv à "+cible.getNom()+".");
+            //return true; (for alive state)
         }
     }
 
