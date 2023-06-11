@@ -11,6 +11,7 @@ public class exemplecard {
     private int maxmana, mana;
     private boolean BaIsmagic;
     private int lvl = 0;
+    private boolean isAlive = true;
     private final exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag);
     private exempleability[] abilityList ={baseAttack};
     public exemplecard(String nom, int pv, int maxpv, int dmgphys, int dmgmag, int defphys, int defmag, int maxmana, int mana, boolean baismagic){
