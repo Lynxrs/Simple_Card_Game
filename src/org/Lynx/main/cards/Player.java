@@ -21,8 +21,11 @@ public class Player {
 
     public static void AddCard(List cardlist,exemplecard card){
         cardlist.add(card);
-
     }
+    public static void RemoveCard(List cardlist,exemplecard card){
+        cardlist.remove(card);
+    }
+
     public exemplecard getcard(int numcarte){
         return cardlist.get(numcarte);
     }
