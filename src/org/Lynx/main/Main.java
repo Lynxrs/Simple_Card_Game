@@ -67,6 +67,7 @@ public class Main {
                     System.out.println("Séléctionnez une carte de votre main");
                     cardLister(touractuel.getCardList());
                     int selectedcard = sc.nextInt();
+                    System.out.println(separator);
                     touractuel.getcard(selectedcard).DislpayStats();
                     System.out.println("Que voulez vous faire? : ");
                     System.out.println("1: attacker 2: vous reposer 3: passer votre tour");
