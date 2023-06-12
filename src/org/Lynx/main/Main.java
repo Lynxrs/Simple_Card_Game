@@ -69,7 +69,7 @@ public class Main {
             while (!win) {
                 int f=0;
                 while(f <a ) {
-                    print("Séléctionnez une carte de votre main");
+                    print("Sélectionnez une carte de votre main");
                     cardLister(touractuel.getCardList());
                     int selectedcard = sc.nextInt();
                     print(separator);
@@ -80,10 +80,10 @@ public class Main {
                     //actions
                     switch (playeraction) {
                         case 1 -> {
-                            print("Selectionnez un joueur");
+                            print("Sélectionnez un joueur");
                             playerlister(touractuel,tours);
                             int pcible = sc.nextInt();
-                            print("Selectionner la cible");
+                            print("Sélectionnez la cible");
                             cardLister(registeredacrds);
                             int cible = sc.nextInt();
                             exemplecard rcible = (exemplecard) tours.get(pcible).getCardList().get(cible);
@@ -95,7 +95,7 @@ public class Main {
                             manaheal(touractuel.getcard(0), 12);
                         }
                         case 3 -> print("Vous passez votre tour");
-                        default -> print("Séléctionnez une action valide");
+                        default -> print("Sélectionnez une action valide");
                     }
                     f++;
                     if (f==a){
@@ -106,7 +106,7 @@ public class Main {
                         touractuel = tours.get(0);
                     }
                 }
-                //condition de victoire débug
+                //condition de victoire debug
                 if(nt == 8){
                     win = true;
                     game = false;
@@ -194,9 +194,9 @@ public class Main {
         }
     }
 
-    public static void cardLister(List<exemplecard> regisred){
+    public static void cardLister(List<exemplecard> registered){
         int i = 0;
-        for (exemplecard exc : regisred) {
+        for (exemplecard exc : registered) {
             print("n°" + i + " : " + exc.getNom());
             i++;
         }
@@ -205,15 +205,16 @@ public class Main {
     public static void playerlister(Player atour,List<Player> registered){
         int i = 0;
         for (Player p : registered){
-            if(p == atour){
-            }else {
+            if (p == atour) {
+                //basically this "if" does nothing it just skips the player that is currently playing
+            } else {
                 print("n°" + i + " : " + p.getNom());
             }
             i++;
         }
     }
 
-    //made the lvl system a bit early I won't use it
+    //made the lvl system way too early I won't use it until I have fix players registered in a .csv file
     public static void LvlUp(exemplecard card){
         card.setLvl(card.getLvl()+1);
         card.setMaxpv(card.getPv()+2);
