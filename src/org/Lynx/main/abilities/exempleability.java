@@ -6,13 +6,15 @@ public class exempleability {
     private int manacost;
     private int dmgphys;
     private int dmgmag;
+    private Boolean HasEffect;
 
-    public exempleability(String name, Boolean ismagic, int manacost, int dmgphys, int dmgmag) {
+    public exempleability(String name, Boolean ismagic, int manacost, int dmgphys, int dmgmag, Boolean hasEffect) {
         this.name = name;
         this.Ismagic = ismagic;
         this.manacost = manacost;
         this.dmgphys = dmgphys;
         this.dmgmag = dmgmag;
+        HasEffect = hasEffect;
     }
 
     public String getName() {
