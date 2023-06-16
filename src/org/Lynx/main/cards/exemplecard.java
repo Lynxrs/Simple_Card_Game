@@ -1,6 +1,10 @@
 package org.Lynx.main.cards;
 
+import org.Lynx.main.Main;
 import org.Lynx.main.abilities.exempleability;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class exemplecard {
 
@@ -12,8 +16,9 @@ public class exemplecard {
     private boolean BaIsmagic;
     private int lvl = 0;
     private boolean isAlive = true;
-    private final exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag);
+    private final exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag,false);
     private exempleability[] abilityList ={baseAttack};
+    private List<String> effectlist = new ArrayList<>();
     public exemplecard(String nom, int pv, int maxpv, int dmgphys, int dmgmag, int defphys, int defmag, int maxmana, int mana, boolean baismagic){
         this.nom = nom;
         this.pv = pv;
@@ -29,10 +34,6 @@ public class exemplecard {
 
     public String getNom() {
         return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
     }
     public int getPv() {
         return pv;
@@ -91,16 +92,25 @@ public class exemplecard {
     public exempleability[] getAbilityList() {
         return abilityList;
     }
+    public List<String> getEffectlist() {
+        return effectlist;
+    }
+    public void setEffectlist(List<String> effectlist) {
+        this.effectlist = effectlist;
+    }
+    public void addEffect(String effectname, List<String> effectlist){
+        effectlist.add(effectname);
+    }
 
 
     public int physdmg(exemplecard cible){
         int totalphysdmg = this.dmgphys- cible.getDefphys();
         if (totalphysdmg<=0){
-            System.out.println(" Aucun points de dégats ont été infligés a "+cible.getNom());
+            Main.print(" Aucun points de dégats ont été infligés a "+cible.getNom());
         }
         else {
             cible.setPv(cible.getPv() - totalphysdmg);
-            System.out.println(" "+totalphysdmg + " points de dégats physiques infligés a " + cible.getNom());
+            Main.print(" "+totalphysdmg + " points de dégats physiques infligés a " + cible.getNom());
         }
         return cible.pv;
     }
@@ -110,30 +120,34 @@ public class exemplecard {
         int totalmagdmg = this.dmgmag-cible.getDefmag();
         if (mana > 2) {
             if (totalmagdmg <= 0){
-                System.out.println(" Aucun points de dégats ont été infligés a "+cible.getNom());
+                Main.print(" Aucun points de dégats ont été infligés a "+cible.getNom());
             }else {
                 cible.setPv(cible.getPv() - totalmagdmg);
-                System.out.println(" "+totalmagdmg + " points de dégats magiques infligés a " + cible.getNom());
+                Main.print(" "+totalmagdmg + " points de dégats magiques infligés a " + cible.getNom());
                 this.setMana(this.mana - manacost);
                 return cible.getPv();
             }
         }
         else{
-            System.out.println(" "+this.nom+" Manque de mana: cette attaque n'est pas possible");
+            Main.print(" "+this.nom+" Manque de mana: cette attaque n'est pas possible");
         }
 
         return this.getMana();
     }
 
     public void DislpayStats(){
-        System.out.println("Pv : "+this.getPv()+"/"+this.getMaxpv());
-        System.out.println("Mana : "+this.getMana()+"/"+this.getMaxmana());
-        System.out.println("Capacités: ");
+        Main.print("Pv : "+this.getPv()+"/"+this.getMaxpv());
+        Main.print("Mana : "+this.getMana()+"/"+this.getMaxmana());
+        Main.print("Capacités: ");
 
         for (exempleability alname : this.getAbilityList()){
-            System.out.println("  "+alname.getName());
+            Main.print("  "+alname.getName());
         }
+        Main.print("Statut : ");
 
+        for (String effects : this.getEffectlist()){
+            Main.print(" "+effects.getClass().getName());
+        }
     }
 
 
@@ -144,6 +158,7 @@ public class exemplecard {
     public void setLvl(int lvl) {
         this.lvl = lvl;
     }
+
 
 
 }
