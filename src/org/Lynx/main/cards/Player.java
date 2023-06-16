@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Player {
     private final String nom;
+    private int playeraction;
+    private exemplecard selectedcard;
     private List<exemplecard> cardlist = new ArrayList<>();
 
     public Player(String nom) {
@@ -28,5 +30,21 @@ public class Player {
 
     public exemplecard getcard(int numcarte){
         return cardlist.get(numcarte);
+    }
+
+    public int getPlayeraction() {
+        return playeraction;
+    }
+
+    public void setPlayeraction(int playeraction) {
+        this.playeraction = playeraction;
+    }
+
+    public exemplecard getSelectedcard() {
+        return selectedcard;
+    }
+
+    public void setSelectedcard(exemplecard selectedcard) {
+        this.selectedcard = selectedcard;
     }
 }
