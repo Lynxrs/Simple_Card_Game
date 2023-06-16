@@ -1,36 +1,36 @@
 package org.Lynx.main;
 
-import org.Lynx.main.abilities.exempleability;
 import org.Lynx.main.cards.Player;
 import org.Lynx.main.cards.exemplecard;
+import org.Lynx.main.files.registerylist;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static Player touractuel;
+    private static List<Player> tours = new ArrayList<>();
+    public static List<exemplecard> registeredacrds = new ArrayList<>();
+
     //make print easy to use
     public static void print(Object str) {
         System.out.println(str);
     }
 
-    public static void main(String[] args){
-        List<Player> tours = new ArrayList<>();
-        List<exemplecard> registeredacrds = new ArrayList<>();
+    public static void main(String[] args) throws IOException {
+
         Scanner sc = new Scanner(System.in);
         int nt = 1;
         boolean game = true;
+        registerylist.init();
 
         //test program  for all the features
         String separator = "==============================";
 
-        //register all the cards
-        exemplecard test2 = new exemplecard("test2", 55, 65, 8, 16, 6, 3, 75,60, false);
-        registercard(test2, registeredacrds);
 
-        exemplecard test1 = new exemplecard("test1",26,30,4,5,8,6,55, 45, true);
-        registercard(test1, registeredacrds);
-        cardLister(registeredacrds);
+
 
         //main game
         while(game) {
@@ -61,7 +61,7 @@ public class Main {
                 bc++;
             }
             //démarrage du jeu
-            Player touractuel = tours.get(0);
+            touractuel = tours.get(0);
             print(separator);
             print(" 1er tour");
             boolean win = false;
@@ -72,6 +72,7 @@ public class Main {
                     print("Sélectionnez une carte de votre main");
                     cardLister(touractuel.getCardList());
                     int selectedcard = sc.nextInt();
+                    touractuel.setSelectedcard(touractuel.getcard(selectedcard));
                     print(separator);
                     touractuel.getcard(selectedcard).DislpayStats();
                     print("Que voulez vous faire? : ");
@@ -80,6 +81,7 @@ public class Main {
                     //actions
                     switch (playeraction) {
                         case 1 -> {
+                            touractuel.setPlayeraction(1);
                             print("Sélectionnez un joueur");
                             playerlister(touractuel,tours);
                             int pcible = sc.nextInt();
@@ -91,13 +93,19 @@ public class Main {
                             LifeCheck(tours.get(pcible), rcible);
                         }
                         case 2 -> {
+                            touractuel.setPlayeraction(2);
                             heal(touractuel.getcard(0), 10);
                             manaheal(touractuel.getcard(0), 12);
                         }
-                        case 3 -> print("Vous passez votre tour");
+                        case 3 -> {
+                            touractuel.setPlayeraction(3);
+                            print("Vous passez votre tour");
+                        }
                         default -> print("Sélectionnez une action valide");
                     }
                     f++;
+
+
                     if (f==a){
                         print(" Fin du tour");
                     } else {
@@ -105,7 +113,9 @@ public class Main {
                         tours = NextPlayer(tours, touractuel);
                         touractuel = tours.get(0);
                     }
+
                 }
+
                 //condition de victoire debug
                 if(nt == 8){
                     win = true;
@@ -139,6 +149,7 @@ public class Main {
         }
 
     }
+
     public static void manaheal(exemplecard target, float percentage){
         //calculating new mana amount
         float manatoset = Math.round(target.getMana()*(1.0+(percentage/100)));
@@ -214,7 +225,7 @@ public class Main {
         }
     }
 
-    //made the lvl system way too early I won't use it until I have fix players registered in a .csv file
+    //made the lvl system way too early I won't use it until I have fix players registered in a  file
     public static void LvlUp(exemplecard card){
         card.setLvl(card.getLvl()+1);
         card.setMaxpv(card.getPv()+2);
@@ -229,5 +240,11 @@ public class Main {
         }else{
             card.setDmgphys(card.getDmgphys()+2);
         }
+    }
+    public static Player gettouractuel(){
+        return touractuel;
+    }
+    public static List<Player>getours(){
+        return tours;
     }
 }
