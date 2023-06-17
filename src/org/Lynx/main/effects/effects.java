@@ -37,5 +37,9 @@ public class effects {
         this.ID = ID;
     };
 
+    public String getName() {
+        return name;
+    }
+
 
 }
