@@ -14,12 +14,14 @@ public class exemplecard {
     private int defphys, defmag;
     private int maxmana, mana;
     private boolean BaIsmagic;
+    private boolean haseffect;
     private int lvl = 0;
     private boolean isAlive = true;
-    private final exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag,false);
-    private exempleability[] abilityList ={baseAttack};
+    private final exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag,false, "waé");
+    private final List<exempleability> abilityList =new ArrayList<>();
     private List<String> effectlist = new ArrayList<>();
     public exemplecard(String nom, int pv, int maxpv, int dmgphys, int dmgmag, int defphys, int defmag, int maxmana, int mana, boolean baismagic){
+        this.abilityList.add(baseAttack);
         this.nom = nom;
         this.pv = pv;
         this.maxpv = maxpv;
@@ -89,7 +91,7 @@ public class exemplecard {
     public exempleability getBaseAttack() {
         return baseAttack;
     }
-    public exempleability[] getAbilityList() {
+    public List<exempleability> getAbilityList() {
         return abilityList;
     }
     public List<String> getEffectlist() {
@@ -115,7 +117,9 @@ public class exemplecard {
         return cible.pv;
     }
 
-
+    public void addability(exempleability ability){
+        abilityList.add(ability);
+    }
     public int magdmg(exemplecard cible, int manacost){
         int totalmagdmg = this.dmgmag-cible.getDefmag();
         if (mana > 2) {
@@ -140,13 +144,13 @@ public class exemplecard {
         Main.print("Mana : "+this.getMana()+"/"+this.getMaxmana());
         Main.print("Capacités: ");
 
-        for (exempleability alname : this.getAbilityList()){
+        for (exempleability alname : abilityList){
             Main.print("  "+alname.getName());
         }
         Main.print("Statut : ");
 
         for (String effects : this.getEffectlist()){
-            Main.print(" "+effects.getClass().getName());
+            Main.print(" "+effects);
         }
     }
 
@@ -160,5 +164,22 @@ public class exemplecard {
     }
 
 
+    public boolean isHaseffect() {
+        return haseffect;
+    }
 
+    public void setHaseffect(boolean haseffect) {
+        this.haseffect = haseffect;
+    }
+
+    public void executeffect(String effect) {
+        switch(effect){
+            case "paralysis" ->{
+                Main.print("La carte est paralysé pour ce tour vous ne pouvez rien faire");
+                Main.CardSelection(Main.gettouractuel());
+                Main.gettouractuel().getSelectedcard().getEffectlist().remove("paralysis");
+                Main.gettouractuel().getSelectedcard().setHaseffect(false);
+            }
+        }
+    }
 }
