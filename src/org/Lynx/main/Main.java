@@ -1,5 +1,6 @@
 package org.Lynx.main;
 
+import org.Lynx.main.abilities.exempleability;
 import org.Lynx.main.cards.Player;
 import org.Lynx.main.cards.exemplecard;
 import org.Lynx.main.files.registerylist;
@@ -10,9 +11,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    public static int chooseability;
     private static Player touractuel;
-    private static List<Player> tours = new ArrayList<>();
+    public static List<Player> tours = new ArrayList<>();
     public static List<exemplecard> registeredacrds = new ArrayList<>();
+    public static List<exempleability> registeredabilities = new ArrayList<>();
 
     //make print easy to use
     public static void print(Object str) {
@@ -69,18 +72,20 @@ public class Main {
             while (!win) {
                 int f=0;
                 while(f <a ) {
-                    print("Sélectionnez une carte de votre main");
-                    cardLister(touractuel.getCardList());
-                    int selectedcard = sc.nextInt();
-                    touractuel.setSelectedcard(touractuel.getcard(selectedcard));
+
                     print(separator);
+                    int selectedcard = CardSelection(touractuel);
                     touractuel.getcard(selectedcard).DislpayStats();
                     print("Que voulez vous faire? : ");
-                    print("1: attacker 2: vous reposer 3: passer votre tour");
+                    print("1: capacité 2: vous reposer 3: passer votre tour");
                     int playeraction = sc.nextInt();
                     //actions
                     switch (playeraction) {
                         case 1 -> {
+                            print("slectionez une compétence");
+                            abilitylister(touractuel);
+                            chooseability = sc.nextInt();
+                            touractuel.setSelectedabl(touractuel.getSelectedcard().getAbilityList().get(chooseability));
                             touractuel.setPlayeraction(1);
                             print("Sélectionnez un joueur");
                             playerlister(touractuel,tours);
@@ -89,7 +94,7 @@ public class Main {
                             cardLister(registeredacrds);
                             int cible = sc.nextInt();
                             exemplecard rcible = (exemplecard) tours.get(pcible).getCardList().get(cible);
-                            Baseattack(touractuel.getcard(selectedcard), rcible, touractuel, tours.get(pcible));
+                            touractuel.getSelectedabl().use(touractuel.getcard(selectedcard), rcible, touractuel, tours.get(pcible));
                             LifeCheck(tours.get(pcible), rcible);
                         }
                         case 2 -> {
@@ -102,6 +107,8 @@ public class Main {
                             print("Vous passez votre tour");
                         }
                         default -> print("Sélectionnez une action valide");
+
+
                     }
                     f++;
 
@@ -164,18 +171,7 @@ public class Main {
             print(target.getMana());
         }
     }
-    public static void Baseattack(exemplecard caster, exemplecard target, Player pcaster, Player ptarget){
-        if (caster == target && pcaster == ptarget){
-            print("vous ne pouvez vous infliger des dégats");
-        }
-        if (caster.getBaIsmagic()){
-            caster.magdmg(target, caster.getBaseAttack().getManacost());
 
-        } else if (!caster.getBaIsmagic()) {
-            caster.physdmg(target);
-        }
-
-    }
     public static List<Player> NextPlayer(List<Player> tours, Player touractuel){
         //
         Player temp = touractuel;
@@ -224,8 +220,40 @@ public class Main {
             i++;
         }
     }
+    public static void abilitylister(Player playing){
+        int i=0;
+        for(exempleability ab : playing.getSelectedcard().getAbilityList()) {
+            print(" n°" + i + " : " + ab.getName());
+            i++;
+        }
+    }
 
-    //made the lvl system way too early I won't use it until I have fix players registered in a  file
+
+    public static Player gettouractuel(){
+        return touractuel;
+    }
+    public static List<Player>getours(){
+        return tours;
+    }
+
+    public static void Statutschecker(Player touractuel){
+        if(touractuel.getSelectedcard().isHaseffect()) {
+            for (String e : touractuel.getSelectedcard().getEffectlist()){
+                touractuel.getSelectedcard().executeffect(e);
+            }
+        }
+    }
+    public static int CardSelection(Player touractuel){
+        print("Sélectionnez une carte de votre main");
+        cardLister(touractuel.getCardList());
+        Scanner sc= new Scanner(System.in);
+        int selectedcard = sc.nextInt();
+        touractuel.setSelectedcard(touractuel.getcard(selectedcard));
+        Statutschecker(touractuel);
+        return selectedcard;
+    }
+
+    /*made the lvl system way too early I won't use it until I have fix players registered in a  file
     public static void LvlUp(exemplecard card){
         card.setLvl(card.getLvl()+1);
         card.setMaxpv(card.getPv()+2);
@@ -240,11 +268,5 @@ public class Main {
         }else{
             card.setDmgphys(card.getDmgphys()+2);
         }
-    }
-    public static Player gettouractuel(){
-        return touractuel;
-    }
-    public static List<Player>getours(){
-        return tours;
-    }
+    }*/
 }
