@@ -1,5 +1,7 @@
 package org.Lynx.main.cards;
 
+import org.Lynx.main.abilities.exempleability;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class Player {
     private int playeraction;
     private exemplecard selectedcard;
     private List<exemplecard> cardlist = new ArrayList<>();
+    private exempleability selectedabl;
 
     public Player(String nom) {
         this.nom = nom;
@@ -46,5 +49,13 @@ public class Player {
 
     public void setSelectedcard(exemplecard selectedcard) {
         this.selectedcard = selectedcard;
+    }
+
+    public exempleability getSelectedabl() {
+        return selectedabl;
+    }
+
+    public void setSelectedabl(exempleability selectedabl) {
+        this.selectedabl = selectedabl;
     }
 }
