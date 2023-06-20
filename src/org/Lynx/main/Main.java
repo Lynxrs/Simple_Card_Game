@@ -3,9 +3,6 @@ package org.Lynx.main;
 import org.Lynx.main.abilities.exempleability;
 import org.Lynx.main.cards.Player;
 import org.Lynx.main.cards.exemplecard;
-import org.Lynx.main.files.registerylist;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -22,7 +19,7 @@ public class Main {
         System.out.println(str);
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
 
         Scanner sc = new Scanner(System.in);
         int nt = 1;
@@ -91,7 +88,7 @@ public class Main {
                             playerlister(touractuel,tours);
                             int pcible = sc.nextInt();
                             print("Sélectionnez la cible");
-                            cardLister(registeredacrds);
+                            cardLister(tours.get(pcible).getCardList());
                             int cible = sc.nextInt();
                             exemplecard rcible = (exemplecard) tours.get(pcible).getCardList().get(cible);
                             touractuel.getSelectedabl().use(touractuel.getcard(selectedcard), rcible, touractuel, tours.get(pcible));
@@ -112,26 +109,33 @@ public class Main {
                     }
                     f++;
 
-
                     if (f==a){
                         print(" Fin du tour");
+                        print(separator);
+                        print(separator);
+                        win = winverification();
+                        if(win){
+                            f = a;
+                            game=nextgame();
+                        }else{
+                            nt = NextTurn(nt, tours, touractuel);
+                            touractuel = tours.get(0);
+                        }
+
                     } else {
                         print(separator);
-                        tours = NextPlayer(tours, touractuel);
-                        touractuel = tours.get(0);
+                        print(separator);
+                        win = winverification();
+
+                        if (win){
+                            f = a;
+                            game=nextgame();
+                        }else{
+                            tours = NextPlayer(tours, touractuel);
+                            touractuel = tours.get(0);
+                        }
                     }
 
-                }
-
-                //condition de victoire debug
-                if(nt == 8){
-                    win = true;
-                    game = false;
-                }else {
-                    print(separator);
-                    print(separator);
-                    nt = NextTurn(nt, tours, touractuel);
-                    touractuel = tours.get(0);
                 }
             }
         }
@@ -174,14 +178,13 @@ public class Main {
 
     public static List<Player> NextPlayer(List<Player> tours, Player touractuel){
         //
-        Player temp = touractuel;
         tours.remove(0);
-        tours.add(temp);
-        Player msg = (Player) tours.get(0);
+        tours.add(touractuel);
+        Player msg =tours.get(0);
         print(" Au tour de "+ msg.getNom()+" de jouer");
         return tours;
     }
-    public static int NextTurn(int nt,List tours, Player touractuel){
+    public static int NextTurn(int nt,List<Player> tours, Player touractuel){
         nt+=1;
         print("tour numéro "+nt);
         tours = NextPlayer(tours, touractuel);
@@ -191,13 +194,14 @@ public class Main {
     //if you use the alive state change function from void to boolean
     public static void LifeCheck(Player player, exemplecard cible){
         if (cible.getPv() <=0){
-            print(cible+" ne possède plus de vie il est donc éliminé.");
-            //return false; (for alive state)
-            player.RemoveCard(player.getCardList(), cible);
+            print("La carte "+cible.getNom()+" ne possède plus de vie elle est donc inutilisable.");
+            //player.RemoveCard(player.getCardList(), cible);
+            cible.setAlive(false);
+
 
         }else{
             print("Il reste "+cible.getPv()+" Pv à "+cible.getNom()+".");
-            //return true; (for alive state)
+            cible.setAlive(true);
         }
     }
 
@@ -232,9 +236,6 @@ public class Main {
     public static Player gettouractuel(){
         return touractuel;
     }
-    public static List<Player>getours(){
-        return tours;
-    }
 
     public static void Statutschecker(Player touractuel){
         if(touractuel.getSelectedcard().isHaseffect()) {
@@ -250,7 +251,50 @@ public class Main {
         int selectedcard = sc.nextInt();
         touractuel.setSelectedcard(touractuel.getcard(selectedcard));
         Statutschecker(touractuel);
+        if(!touractuel.getcard(selectedcard).isAlive()){
+            print("cette carte est morte vous ne pouvez pas faire d'actions avec celle ci");
+            selectedcard = CardSelection(touractuel);
+        }else{
+            return selectedcard;
+        }
+
         return selectedcard;
+    }
+    public static Boolean winverification(){
+        int f=tours.size();
+        int i =0;
+        while(i!=f){
+            if(i>f){
+                i = f;
+            }else{
+                Player p = tours.get(i);
+                p.alldead();
+                f=tours.size();
+                i++;
+            }
+
+        }
+        if (tours.size()==1){
+            print(tours.get(0).getNom()+" a gagné la partie GG!");
+
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public static Boolean nextgame(){
+        print("Voulez vous rejouer? (oui non)");
+        Scanner sc = new Scanner(System.in);
+        String rep = sc.next();
+        if(rep.equalsIgnoreCase("oui")){
+            return true;
+        }else if(rep.equalsIgnoreCase("non")){
+            return false;
+        }else{
+            print("veuillez entrer un réponse valide");
+            return nextgame();
+        }
+
     }
 
     /*made the lvl system way too early I won't use it until I have fix players registered in a  file
