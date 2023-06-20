@@ -30,8 +30,6 @@ public class Main {
         String separator = "==============================";
 
 
-
-
         //main game
         while(game) {
             print(separator);
