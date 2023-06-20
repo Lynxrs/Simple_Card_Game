@@ -182,4 +182,12 @@ public class exemplecard {
             }
         }
     }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
 }
