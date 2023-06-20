@@ -33,8 +33,6 @@ public class Main {
         String separator = "==============================";
 
 
-
-
         //main game
         while(game) {
             print(separator);
@@ -91,7 +89,7 @@ public class Main {
                             playerlister(touractuel,tours);
                             int pcible = sc.nextInt();
                             print("Sélectionnez la cible");
-                            cardLister(registeredacrds);
+                            cardLister(tours.get(pcible).getCardList());
                             int cible = sc.nextInt();
                             exemplecard rcible = (exemplecard) tours.get(pcible).getCardList().get(cible);
                             touractuel.getSelectedabl().use(touractuel.getcard(selectedcard), rcible, touractuel, tours.get(pcible));
