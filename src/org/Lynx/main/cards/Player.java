@@ -1,5 +1,6 @@
 package org.Lynx.main.cards;
 
+import org.Lynx.main.Main;
 import org.Lynx.main.abilities.exempleability;
 
 import java.util.ArrayList;
@@ -57,5 +58,22 @@ public class Player {
 
     public void setSelectedabl(exempleability selectedabl) {
         this.selectedabl = selectedabl;
+    }
+
+    public void alldead(){
+        int counter =0;
+        for(exemplecard ex: cardlist){
+            if(!ex.isAlive()){
+                counter++;
+            }
+        }
+        if(counter == cardlist.size()){
+            Main.print("Toutes les cartes de ce joueur sont mortes il est donc éliminé");
+            Main.tours.remove(this);
+        }
+    }
+
+    public void removecardformlist(exemplecard card){
+        cardlist.remove(card);
     }
 }
