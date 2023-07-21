@@ -19,9 +19,10 @@ public class registerylist {
 
         exemplecard paladin = new paladin("Paladin", 65, 65, 12, 2, 10,10,15,15,false);
         registercard(paladin, Main.registeredacrds);
+
         //register Abilities
         //n0
-        exempleability electrocution = new exempleability("eleectrocution",true,2,0,5,true, "paralysis");
+        exempleability electrocution = new exempleability("eleectrocution",true,2,0,5,true, "paralysis",false);
         test2.addability(electrocution);
         //n1
 
