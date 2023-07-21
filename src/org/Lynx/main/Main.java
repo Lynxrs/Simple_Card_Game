@@ -18,24 +18,32 @@ public class Main {
     public static void print(Object str) {
         System.out.println(str);
     }
-    public static void separators(int nbr){
+    public static void separators(int nbr, int n){
         int i=0;
         while( i != nbr) {
-            print("==============================");
+            print("=".repeat(n));
             i++;
         }
     }
     public static void main(String[] args){
-
         Scanner sc = new Scanner(System.in);
         int nt = 1;
         boolean game = true;
         registerylist.init();
 
+        //board tests
+        board Blueside= new board();
+        Blueside.Boardgen(Blueside.Board,2, 6);
+        Blueside.display();
+        separators(1,18);
+        board Redside = new board();
+        Redside.Boardgen(Redside.Board,2,6);
+        Redside.display();
+
 
         //main game
         while(game) {
-            separators(2);
+            separators(2,30);
             print("Nombre de joueurs");
             int a = sc.nextInt();
             int bc = 0;
@@ -62,7 +70,7 @@ public class Main {
             }
             //démarrage du jeu
             touractuel = tours.get(0);
-            separators(1);
+            separators(1,30);
             print(" 1er tour");
             boolean win = false;
             //boucle condition de victoire
@@ -70,7 +78,7 @@ public class Main {
                 int f=0;
                 while(f <a ) {
 
-                    separators(1);
+                    separators(1,30);
                     int selectedcard = CardSelection(touractuel);
                     touractuel.getcard(selectedcard).DislpayStats();
                     print("Que voulez vous faire? : ");
@@ -111,7 +119,7 @@ public class Main {
 
                     if (f==a){
                         print(" Fin du tour");
-                        separators(2);
+                        separators(2,30);
                         win = winverification();
                         if(win){
                             f = a;
@@ -122,7 +130,7 @@ public class Main {
                         }
 
                     } else {
-                        separators(2);
+                        separators(2,30);
                         win = winverification();
 
                         if (win){
