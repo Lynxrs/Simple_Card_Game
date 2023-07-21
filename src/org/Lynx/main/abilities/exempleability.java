@@ -19,14 +19,16 @@ public class exempleability {
     private Boolean HasEffect;
     private String effectname;
     private List<effects> effectlist = new ArrayList<>();
+    private Boolean selfhit;
 
-    public exempleability(String name, Boolean ismagic, int manacost, int dmgphys, int dmgmag, Boolean hasEffect, String effectID) {
+    public exempleability(String name, Boolean ismagic, int manacost, int dmgphys, int dmgmag, Boolean hasEffect, String effectID, Boolean selfhit) {
         this.name = name;
         this.Ismagic = ismagic;
         this.manacost = manacost;
         this.dmgphys = dmgphys;
         this.dmgmag = dmgmag;
         this.HasEffect = hasEffect;
+        this.selfhit = selfhit;
         if(this.getHasEffect()){
             this.effectname = effectID;
         }
@@ -41,8 +43,9 @@ public class exempleability {
         return Ismagic;
     }
     public void use(exemplecard caster, exemplecard target, Player pcaster, Player ptarget){
-        if (caster == target && pcaster == ptarget){
+        if (caster == target && pcaster == ptarget && !pcaster.getSelectedabl().selfhit){
             print("vous ne pouvez vous infliger des dégats");
+            use(caster,target,pcaster,ptarget);
         }
         if (pcaster.getSelectedabl().getIsmagic()){
             exempleability abl = pcaster.getSelectedabl();
