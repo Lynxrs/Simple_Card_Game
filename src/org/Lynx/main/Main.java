@@ -18,7 +18,13 @@ public class Main {
     public static void print(Object str) {
         System.out.println(str);
     }
-
+    public static void separators(int nbr){
+        int i=0;
+        while( i != nbr) {
+            print("==============================");
+            i++;
+        }
+    }
     public static void main(String[] args){
 
         Scanner sc = new Scanner(System.in);
@@ -26,14 +32,10 @@ public class Main {
         boolean game = true;
         registerylist.init();
 
-        //test program  for all the features
-        String separator = "==============================";
-
 
         //main game
         while(game) {
-            print(separator);
-            print(separator);
+            separators(2);
             print("Nombre de joueurs");
             int a = sc.nextInt();
             int bc = 0;
@@ -60,7 +62,7 @@ public class Main {
             }
             //démarrage du jeu
             touractuel = tours.get(0);
-            print(separator);
+            separators(1);
             print(" 1er tour");
             boolean win = false;
             //boucle condition de victoire
@@ -68,7 +70,7 @@ public class Main {
                 int f=0;
                 while(f <a ) {
 
-                    print(separator);
+                    separators(1);
                     int selectedcard = CardSelection(touractuel);
                     touractuel.getcard(selectedcard).DislpayStats();
                     print("Que voulez vous faire? : ");
@@ -90,7 +92,7 @@ public class Main {
                             int cible = sc.nextInt();
                             exemplecard rcible = (exemplecard) tours.get(pcible).getCardList().get(cible);
                             touractuel.getSelectedabl().use(touractuel.getcard(selectedcard), rcible, touractuel, tours.get(pcible));
-                            LifeCheck(tours.get(pcible), rcible);
+                            LifeCheck(rcible);
                         }
                         case 2 -> {
                             touractuel.setPlayeraction(2);
@@ -109,8 +111,7 @@ public class Main {
 
                     if (f==a){
                         print(" Fin du tour");
-                        print(separator);
-                        print(separator);
+                        separators(2);
                         win = winverification();
                         if(win){
                             f = a;
@@ -121,8 +122,7 @@ public class Main {
                         }
 
                     } else {
-                        print(separator);
-                        print(separator);
+                        separators(2);
                         win = winverification();
 
                         if (win){
@@ -189,11 +189,9 @@ public class Main {
         return nt;
     }
 
-    //if you use the alive state change function from void to boolean
-    public static void LifeCheck(Player player, exemplecard cible){
+    public static void LifeCheck(exemplecard cible){
         if (cible.getPv() <=0){
             print("La carte "+cible.getNom()+" ne possède plus de vie elle est donc inutilisable.");
-            //player.RemoveCard(player.getCardList(), cible);
             cible.setAlive(false);
 
 
@@ -214,9 +212,7 @@ public class Main {
     public static void playerlister(Player atour,List<Player> registered){
         int i = 0;
         for (Player p : registered){
-            if (p == atour) {
-                //basically this "if" does nothing it just skips the player that is currently playing
-            } else {
+            if (p != atour) {
                 print("n°" + i + " : " + p.getNom());
             }
             i++;
