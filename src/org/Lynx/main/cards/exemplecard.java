@@ -17,7 +17,7 @@ public class exemplecard {
     private boolean haseffect;
     private int lvl = 0;
     private boolean isAlive = true;
-    private final exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag,false, "waé");
+    private final exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag,false, "waé", false);
     private final List<exempleability> abilityList =new ArrayList<>();
     private List<String> effectlist = new ArrayList<>();
     public exemplecard(String nom, int pv, int maxpv, int dmgphys, int dmgmag, int defphys, int defmag, int maxmana, int mana, boolean baismagic){
