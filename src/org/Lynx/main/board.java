@@ -7,6 +7,7 @@ public class board {
     public ArrayList<ArrayList<Object>> getboard(){
         return Board;
     }
+
     public void display(){
         int i=0;
         int bs = Board.size();
