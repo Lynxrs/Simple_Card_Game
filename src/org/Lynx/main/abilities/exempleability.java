@@ -54,7 +54,7 @@ public class exempleability {
                 target.getEffectlist().add(abl.getEffectname());
             }
 
-        } else if (!pcaster.getSelectedabl().getIsmagic()) {
+        } else{
             exempleability abl = pcaster.getSelectedabl();
             caster.physdmg(target);
             if(abl.getHasEffect()){

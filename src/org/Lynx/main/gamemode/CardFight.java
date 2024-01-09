@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static org.Lynx.main.Main.generatePlayer;
+
 public class CardFight {
     public static void print(Object str) {
         System.out.println(str);
@@ -21,40 +23,27 @@ public class CardFight {
         }
     }
 
+    public CardFight() {
+        super();
+    }
+
     public static void init() {
         int nt = 1;
         boolean game = true;
         Scanner sc = new Scanner(System.in);
         List<Player> tours = Main.tours;
-        Player touractuel = Main.touractuel;
+
         //main game
         while (game) {
             separators(2, 30);
             print("Nombre de joueurs");
             int a = sc.nextInt();
-            int bc = 0;
             print("Nombre de card par joueur");
             int nbcard = sc.nextInt();
+            generatePlayer(a,nbcard);
             //Générateur de joueur
-            while (bc != a) {
-                print(a);
-                print("Veuillez entrez le nom du joueur : ");
-                String name = sc.next();
-                Player player = new Player(name);
-                print(player.getNom() + " veuillez ajouter " + nbcard + " une carte : ");
-                int nbcc = 0;
-                while (nbcard != nbcc) {
-                    Main.cardLister(Main.registeredacrds);
-                    int card = sc.nextInt();
-                    player.AddCard(player.getCardList(), Main.registeredacrds.get(card));
-                    print("Carte suivante");
-                    nbcc++;
-                }
-                print("Joueur suivant");
-                tours.add(player);
-                bc++;
-            }
             //démarrage du jeu
+            Player touractuel = Main.touractuel;
             touractuel = tours.get(0);
             separators(1, 30);
             print(" 1er tour");

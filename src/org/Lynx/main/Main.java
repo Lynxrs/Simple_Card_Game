@@ -212,7 +212,28 @@ public class Main {
 
     }
 
+    public static void generatePlayer(int playerNumber, int cardNumber){
+            int bc = 0;
 
+            while (bc != playerNumber) {
+                Scanner sc = new Scanner(System.in);
+                print("Veuillez entrez le nom du joueur : ");
+                String name = sc.next();
+                Player player = new Player(name);
+                print(player.getNom() + " veuillez ajouter " + cardNumber + " une carte : ");
+                int nbcc = 0;
+                while (cardNumber != nbcc) {
+                    Main.cardLister(Main.registeredacrds);
+                    int card = sc.nextInt();
+                    player.AddCard(player.getCardList(), Main.registeredacrds.get(card));
+                    print("Carte suivante");
+                    nbcc++;
+                }
+                print("Joueur suivant");
+                tours.add(player);
+                bc++;
+            }
+    }
 
     /*made the lvl system way too early I won't use it until I have fix players registered in a  file
     public static void LvlUp(exemplecard card){
