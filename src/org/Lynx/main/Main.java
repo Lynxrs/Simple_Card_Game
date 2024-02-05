@@ -13,7 +13,6 @@ import java.util.Scanner;
 public class Main {
     //database tests
 
-    SQL.registerUser();
 
     //main code
     public static int chooseability;
