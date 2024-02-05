@@ -5,12 +5,17 @@ import org.Lynx.main.cards.Player;
 import org.Lynx.main.cards.exemplecard;
 import org.Lynx.main.gamemode.BoardMode;
 import org.Lynx.main.gamemode.CardFight;
-
+import org.Lynx.main.SQL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    //database tests
+
+    SQL.registerUser();
+
+    //main code
     public static int chooseability;
     public static Player touractuel;
     public static List<Player> tours = new ArrayList<>();
@@ -103,6 +108,7 @@ public class Main {
         print(" Au tour de "+ msg.getNom()+" de jouer");
         return tours;
     }
+
     public static int NextTurn(int nt,List<Player> tours, Player touractuel){
         nt+=1;
         print("tour numéro "+nt);
@@ -139,6 +145,7 @@ public class Main {
             i++;
         }
     }
+
     public static void abilitylister(Player playing){
         int i=0;
         for(exempleability ab : playing.getSelectedcard().getAbilityList()) {
@@ -146,7 +153,6 @@ public class Main {
             i++;
         }
     }
-
 
     public static Player gettouractuel(){
         return touractuel;
@@ -159,6 +165,7 @@ public class Main {
             }
         }
     }
+
     public static int CardSelection(Player touractuel){
         print("Sélectionnez une carte de votre main");
         cardLister(touractuel.getCardList());
@@ -175,6 +182,7 @@ public class Main {
 
         return selectedcard;
     }
+
     public static Boolean winverification(){
         int f=tours.size();
         int i =0;
@@ -197,6 +205,7 @@ public class Main {
             return false;
         }
     }
+
     public static Boolean nextgame(){
         print("Voulez vous rejouer? (oui non)");
         Scanner sc = new Scanner(System.in);

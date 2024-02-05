@@ -20,6 +20,7 @@ public class exemplecard {
     private final exempleability baseAttack = new exempleability("Attaque de base", this.BaIsmagic,2,this.dmgphys, this.dmgmag,false, "waé", false);
     private final List<exempleability> abilityList =new ArrayList<>();
     private List<String> effectlist = new ArrayList<>();
+
     public exemplecard(String nom, int pv, int maxpv, int dmgphys, int dmgmag, int defphys, int defmag, int maxmana, int mana, boolean baismagic){
         this.abilityList.add(baseAttack);
         this.nom = nom;
@@ -37,73 +38,94 @@ public class exemplecard {
     public String getNom() {
         return nom;
     }
+
     public int getPv() {
         return pv;
     }
+
     public void setPv(int pv) {
         this.pv = pv;
     }
+
     public int getDmgphys() {
         return dmgphys;
     }
+
     public void setDmgphys(int dmgphys) {
         this.dmgphys = dmgphys;
     }
+
     public int getDmgmag() {
         return dmgmag;
     }
+
     public void setDmgmag(int dmgmag) {
         this.dmgmag = dmgmag;
     }
+
     public int getDefphys() {
         return defphys;
     }
+
     public void setDefphys(int defphys) {
         this.defphys = defphys;
     }
+
     public void setDefmag(int defmag) {
         this.defmag = defmag;
     }
+
     public int getDefmag() {
         return defmag;
     }
+
     public int getMaxpv() {
         return maxpv;
     }
+
     public void setMaxpv(int maxpv) {
         this.maxpv = maxpv;
     }
+
     public int getMana() {
         return mana;
     }
+
     public void setMana(int mana) {
         this.mana = mana;
     }
+
     public int getMaxmana() {
         return maxmana;
     }
+
     public void setMaxmana(int maxmana) {
         this.maxmana = maxmana;
     }
+
     public boolean getBaIsmagic(){
         return BaIsmagic;
     }
+
     public exempleability getBaseAttack() {
         return baseAttack;
     }
+
     public List<exempleability> getAbilityList() {
         return abilityList;
     }
+
     public List<String> getEffectlist() {
         return effectlist;
     }
+
     public void setEffectlist(List<String> effectlist) {
         this.effectlist = effectlist;
     }
+
     public void addEffect(String effectname, List<String> effectlist){
         effectlist.add(effectname);
     }
-
 
     public int physdmg(exemplecard cible){
         int totalphysdmg = this.dmgphys- cible.getDefphys();
@@ -120,6 +142,7 @@ public class exemplecard {
     public void addability(exempleability ability){
         abilityList.add(ability);
     }
+
     public int magdmg(exemplecard cible, int manacost){
         int totalmagdmg = this.dmgmag-cible.getDefmag();
         if (mana > 2) {
@@ -154,7 +177,6 @@ public class exemplecard {
         }
     }
 
-
     public int getLvl() {
         return lvl;
     }
@@ -162,7 +184,6 @@ public class exemplecard {
     public void setLvl(int lvl) {
         this.lvl = lvl;
     }
-
 
     public boolean isHaseffect() {
         return haseffect;

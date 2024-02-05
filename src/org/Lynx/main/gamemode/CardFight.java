@@ -4,16 +4,19 @@ import org.Lynx.main.Main;
 import org.Lynx.main.cards.Player;
 import org.Lynx.main.cards.exemplecard;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static org.Lynx.main.Main.tours;
+
 public class CardFight {
+    static int cible;
+    static int targetPlayer;
     public static void print(Object str) {
         System.out.println(str);
-    }
+    } //simplifier le prinln
 
-    public static void separators(int nbr, int n) {
+    public static void separators(int nbr, int n) { //Affiche des lignes de "=" pour séparer les textes. n = le nombre de "=" par ligne nbr = le nombre de lignes
         int i = 0;
         while (i != nbr) {
             print("=".repeat(n));
@@ -26,36 +29,14 @@ public class CardFight {
         boolean game = true;
         Scanner sc = new Scanner(System.in);
         List<Player> tours = Main.tours;
-        Player touractuel = Main.touractuel;
+        Player tourActuel = Main.touractuel;
         //main game
         while (game) {
-            separators(2, 30);
-            print("Nombre de joueurs");
-            int a = sc.nextInt();
-            int bc = 0;
-            print("Nombre de card par joueur");
-            int nbcard = sc.nextInt();
+            separators(2, 30); //séparateurs ==
             //Générateur de joueur
-            while (bc != a) {
-                print(a);
-                print("Veuillez entrez le nom du joueur : ");
-                String name = sc.next();
-                Player player = new Player(name);
-                print(player.getNom() + " veuillez ajouter " + nbcard + " une carte : ");
-                int nbcc = 0;
-                while (nbcard != nbcc) {
-                    Main.cardLister(Main.registeredacrds);
-                    int card = sc.nextInt();
-                    player.AddCard(player.getCardList(), Main.registeredacrds.get(card));
-                    print("Carte suivante");
-                    nbcc++;
-                }
-                print("Joueur suivant");
-                tours.add(player);
-                bc++;
-            }
+            int a = generatePlayer(); //retourne le nombre de joueurs
             //démarrage du jeu
-            touractuel = tours.get(0);
+            tourActuel = tours.get(0); //récupération du joueur 1
             separators(1, 30);
             print(" 1er tour");
             boolean win = false;
@@ -65,36 +46,32 @@ public class CardFight {
                 while (f < a) {
 
                     separators(1, 30);
-                    int selectedcard = Main.CardSelection(touractuel);
-                    touractuel.getcard(selectedcard).DislpayStats();
+                    int selectedCard = Main.CardSelection(tourActuel);
+                    tourActuel.getcard(selectedCard).DislpayStats();
                     print("Que voulez vous faire? : ");
                     print("1: capacité 2: vous reposer 3: passer votre tour");
                     int playeraction = sc.nextInt();
                     //actions
                     switch (playeraction) {
+
                         case 1 -> {
-                            print("slectionez une compétence");
-                            Main.abilitylister(touractuel);
-                            Main.chooseability = sc.nextInt();
-                            touractuel.setSelectedabl(touractuel.getSelectedcard().getAbilityList().get(Main.chooseability));
-                            touractuel.setPlayeraction(1);
-                            print("Sélectionnez un joueur");
-                            Main.playerlister(touractuel, tours);
-                            int pcible = sc.nextInt();
-                            print("Sélectionnez la cible");
-                            Main.cardLister(tours.get(pcible).getCardList());
-                            int cible = sc.nextInt();
-                            exemplecard rcible = (exemplecard) tours.get(pcible).getCardList().get(cible);
-                            touractuel.getSelectedabl().use(touractuel.getcard(selectedcard), rcible, touractuel, tours.get(pcible));
-                            Main.LifeCheck(rcible);
+
+                            abilityselect();
+                            targetselect();
+                            tourActuel.setPlayeraction(1);
+                            exemplecard targetCard = (exemplecard) tours.get(targetPlayer).getCardList().get(cible);
+                            tourActuel.getSelectedabl().use(tourActuel.getcard(selectedCard), targetCard, tourActuel, tours.get(targetPlayer));
+                            Main.LifeCheck(targetCard);
                         }
                         case 2 -> {
-                            touractuel.setPlayeraction(2);
-                            Main.heal(touractuel.getcard(0), 10);
-                            Main.manaheal(touractuel.getcard(0), 12);
+
+                            tourActuel.setPlayeraction(2);
+                            Main.heal(tourActuel.getcard(0), 10);
+                            Main.manaheal(tourActuel.getcard(0), 12);
                         }
                         case 3 -> {
-                            touractuel.setPlayeraction(3);
+
+                            tourActuel.setPlayeraction(3);
                             print("Vous passez votre tour");
                         }
                         default -> print("Sélectionnez une action valide");
@@ -111,8 +88,8 @@ public class CardFight {
                             f = a;
                             game = Main.nextgame();
                         } else {
-                            nt = Main.NextTurn(nt, tours, touractuel);
-                            touractuel = tours.get(0);
+                            nt = Main.NextTurn(nt, tours, tourActuel);
+                            tourActuel = tours.get(0);
                         }
 
                     } else {
@@ -123,8 +100,8 @@ public class CardFight {
                             f = a;
                             game = Main.nextgame();
                         } else {
-                            tours = Main.NextPlayer(tours, touractuel);
-                            touractuel = tours.get(0);
+                            tours = Main.NextPlayer(tours, tourActuel);
+                            tourActuel = tours.get(0);
                         }
                     }
 
@@ -132,4 +109,59 @@ public class CardFight {
             }
         }
     }
+
+    public static int generatePlayer(){
+        Scanner sc = new Scanner(System.in);
+        print("Nombre de joueurs");
+        int a = sc.nextInt();
+        print("Nombre de card par joueur");
+        int nbcard = sc.nextInt();
+        int bc = 0;
+        while (bc != a) {
+            print(a);
+            print("Veuillez entrez le nom du joueur : ");
+            String name = sc.next();
+            Player player = new Player(name);
+            print(player.getNom() + " veuillez ajouter " + nbcard + " une carte : ");
+            int nbcc = 0;
+            while (nbcard != nbcc) {
+                Main.cardLister(Main.registeredacrds);
+                int card = sc.nextInt();
+                if(!(card > nbcard)){
+                    player.AddCard(player.getCardList(), Main.registeredacrds.get(card));
+                    print("Carte suivante");
+                    nbcc++;
+                }else{
+                    print("la carte séléctionée st invalide");
+                }
+
+
+            }
+            print("Joueur suivant");
+            tours.add(player);
+            bc++;
+        }
+        return a;
+    }
+
+    public static void abilityselect() {
+        Scanner sc = new Scanner(System.in);
+        print("slectionez une compétence");
+        Main.abilitylister(Main.touractuel);
+        Main.chooseability = sc.nextInt();
+        Main.touractuel.setSelectedabl(Main.touractuel.getSelectedcard().getAbilityList().get(Main.chooseability));
+
+    }
+
+    public static void targetselect() {
+        Scanner sc = new Scanner(System.in);
+        print("Sélectionnez un joueur");
+        Main.playerlister(Main.touractuel, tours);
+        targetPlayer = sc.nextInt();
+        print("Sélectionnez la cible");
+        Main.cardLister(tours.get(targetPlayer).getCardList());
+        cible = sc.nextInt();
+
+    }
+
 }

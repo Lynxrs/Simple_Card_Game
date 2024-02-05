@@ -47,19 +47,19 @@ public class exempleability {
             print("vous ne pouvez vous infliger des dégats");
             use(caster,target,pcaster,ptarget);
         }
-        if (pcaster.getSelectedabl().getIsmagic()){
+        if (!pcaster.getSelectedabl().getIsmagic()) {
+            exempleability abl = pcaster.getSelectedabl();
+            caster.physdmg(target);
+            if(abl.getHasEffect()){
+                target.getEffectlist().add(Main.registeredabilities.get(Main.chooseability).getEffectname());
+            }
+        } else {
             exempleability abl = pcaster.getSelectedabl();
             caster.magdmg(target, abl.getManacost());
             if(abl.getHasEffect()){
                 target.getEffectlist().add(abl.getEffectname());
             }
 
-        } else if (!pcaster.getSelectedabl().getIsmagic()) {
-            exempleability abl = pcaster.getSelectedabl();
-            caster.physdmg(target);
-            if(abl.getHasEffect()){
-                target.getEffectlist().add(Main.registeredabilities.get(Main.chooseability).getEffectname());
-            }
         }
 
     }
