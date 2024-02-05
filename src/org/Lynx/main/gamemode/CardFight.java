@@ -7,7 +7,6 @@ import org.Lynx.main.cards.exemplecard;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.Lynx.main.Main.tours;
 
 public class CardFight {
     static int cible;
@@ -22,6 +21,10 @@ public class CardFight {
             print("=".repeat(n));
             i++;
         }
+    }
+
+    public CardFight() {
+        super();
     }
 
     public static void init() {
@@ -138,7 +141,7 @@ public class CardFight {
 
             }
             print("Joueur suivant");
-            tours.add(player);
+            Main.tours.add(player);
             bc++;
         }
         return a;
@@ -156,10 +159,10 @@ public class CardFight {
     public static void targetselect() {
         Scanner sc = new Scanner(System.in);
         print("Sélectionnez un joueur");
-        Main.playerlister(Main.touractuel, tours);
+        Main.playerlister(Main.touractuel, Main.tours);
         targetPlayer = sc.nextInt();
         print("Sélectionnez la cible");
-        Main.cardLister(tours.get(targetPlayer).getCardList());
+        Main.cardLister(Main.tours.get(targetPlayer).getCardList());
         cible = sc.nextInt();
 
     }
